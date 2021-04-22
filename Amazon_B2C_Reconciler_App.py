@@ -16,7 +16,8 @@ try :
 except :
     print('File path not correct format')
 
-input_recon_country = input('Which country is being reconciled? (US, CA, DE, IT, ES, FR, UK, NL): ')
+input_recon_country = recon_path.split('\\')[-1]
+# input_recon_country = input('Which country is being reconciled? (US, CA, DE, IT, ES, FR, UK, NL): ')
 
 def region_recon(input_recon_country) :
     global recon_country
@@ -39,7 +40,7 @@ def region_recon(input_recon_country) :
 
 region_recon(input_recon_country)
 
-input_missing_orderids = input('Reconcile based on customer name due to missing order-ids in payment file? (y/n): ')
+# input_missing_orderids = input('Reconcile based on customer name due to missing order-ids in payment file? (y/n): ')
 
 print('Reconciliation region:',recon_region)
 
