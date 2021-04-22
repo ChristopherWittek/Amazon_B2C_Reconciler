@@ -109,7 +109,7 @@ principals_missing_internalids = amazon_statement_with_cust_name[(amazon_stateme
 principals_missing_internalids = principals_missing_internalids[['order-id','amount-description','amount','posted-date','Name','Internal ID']]
 
 if len(principals_missing_internalids) > 0 :
-    print(r'"/!\ WARNING:',len(principals_missing_internalids),r'orders with principals missing internal IDs that will result in',principals_missing_internalids['amount'].agg(lambda x : pd.to_numeric(x,errors='coerce')).sum(),r'Currency (without fees) Sum Check Levy /!\"')
+    print(r'"/!\ WARNING:',len(principals_missing_internalids),r'orders with principals missing internal IDs that will result in',principals_missing_internalids['amount'].agg(lambda x : pd.to_numeric(x,errors='coerce')).sum(),r' (without fees) Sum Check Levy /!\"')
     print('  !  LIST OF EXAMPLES: ',set(principals_missing_internalids['order-id']))
     print('  !  1) Check if order-ids exist in Netsuite\n  !  2) Check if Orders Report is in the date range of the statements\n  !  3) Check if there is an issue merging cust_internal_ids, or if there is an issue with the file\n')
     principals_missing_internalids.to_csv(recon_path_data+r'\principals_missing_internalids.csv')
@@ -181,10 +181,10 @@ amount_description_types = {'Commission':(525,'640101 - Amazon Fees'),
     'MarketplaceFacilitatorTax-Shipping':(599,'840203 - Other Levies'),
     'MarketplaceFacilitatorTax-RestockingFee':(599,'840203 - Other Levies'),
     'MarketplaceFacilitatorTax-Other':(599,'840203 - Other Levies'),
-    'MarketplaceFacilitatorTax-Principal':(599,'840203 - Other Levies'),
     'MarketplaceFacilitatorVAT-Principal':(742,'137002 - Un-reconciled B2C Payments '),# added whitespace so that je2_amount can still be determined
-    'MarketplaceFacilitatorVAT-Shipping':(742,'137002 - Un-reconciled B2C Payments ')# added whitespace so that je2_amount can still be determined
-    }
+    'MarketplaceFacilitatorVAT-Shipping':(742,'137002 - Un-reconciled B2C Payments '),
+    'FBA Pick & Pack Fee':(525,'640101 - Amazon Fees')# added whitespace so that je2_amount can still be determined
+    }#'MarketplaceFacilitatorTax-Principal':(599,'840203 - Other Levies'),
 
 print('Summary of data tables:')
 print('netsuite_product_data:',len(netsuite_product_data),'rows.')

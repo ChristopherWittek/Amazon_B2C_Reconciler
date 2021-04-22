@@ -24,8 +24,8 @@ if len(red_deltas_df) != 0 :
                 red_deltas_df['Comments'].loc[key] = 'Missing Payment'
             elif abs(val['Delta']) < abs(val['Grand Total']) :
                 red_deltas_df['Comments'].loc[key] = 'Base Price Delta'
-            elif input_missing_orderids == 'y' and (val['Sale'] != 0) and (abs(val['Credit']) > val['Sale']) :
-                red_deltas_df['Comments'].loc[key] = 'Refunds summed up incorrectly due to missing order-ids (match via cus_id)'
+            # elif input_missing_orderids == 'y' and (val['Sale'] != 0) and (abs(val['Credit']) > val['Sale']) :
+            #     red_deltas_df['Comments'].loc[key] = 'Refunds summed up incorrectly due to missing order-ids (match via cus_id)'
             elif (val['Credit'] != 0) and (val['Sale'] > abs(val['Credit'])) :
                 red_deltas_df['Comments'].loc[key] = 'Refund less than total amount'
             elif abs(val['Delta']) / 2 == abs(val['Grand Total']) or val['Grand Total'] == 0 or ( val['Grand Total'] < 0 and val['Credit'] == 0 ) :
@@ -44,10 +44,14 @@ if len(so_missing_rma) > 0 :
 
     netsuite_orders_rma = netsuite_orders_rma[netsuite_orders_rma['order-id'].isin(so_missing_rma)]
     netsuite_orders_rma = netsuite_orders_rma.iloc[:,[0,3,4,7]]
-    netsuite_orders_rma = netsuite_orders_rma[netsuite_orders_rma['Item'].str.startswith('PRD')].sort_values('Internal ID')
-    netsuite_orders_rma['No. of Line Items'] = netsuite_orders_rma.groupby(['Internal ID'])['Item'].transform('count')
 
-    print(netsuite_orders_rma)
+    try :
+        netsuite_orders_rma = netsuite_orders_rma[netsuite_orders_rma['Item'].str.startswith('PRD')].sort_values('Internal ID')
+        netsuite_orders_rma['No. of Line Items'] = netsuite_orders_rma.groupby(['Internal ID'])['Item'].transform('count')
+        print(netsuite_orders_rma)
+    except Exception as e :
+        print('netsuite_orders_rma: No Items starting with PRD in the column:',e)
+
 
     rmas_pending_receipt = []
     for key,val in netsuite_orders_rma.iterrows() :
@@ -63,7 +67,8 @@ if len(so_missing_rma) > 0 :
                 netsuite_orders_rma = netsuite_orders_rma.drop(key)
 else :
     print(r'"/!\ len(so_missing_rma) == 0 "')
-
+# except :
+#     print('so_missing_rma not generated')
 
 #### Recon Summary ####
 os.chdir(recon_path+r'\Output Files')
