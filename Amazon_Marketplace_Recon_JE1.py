@@ -113,20 +113,26 @@ for key,val in tqdm(amazon_netsuite_recon_summary.iterrows(),total=recon_length,
                 journal_entry1 = journal_entry1.append(journal_line,ignore_index=True)
             continue
 
+if recon_country in ['US','CA'] :
+    account_internal_id = '54'
+    account_name = '410101 - Revenue'
+else :
+    account_internal_id = '599'
+    account_name = '840203 - Other Levies'
 
 try :
     levies_sum = round(white_levies.sum(),2)
     if levies_sum < 0 :
-        journal_line = {'Account':'840203 - Other Levies',
-        'Internal ID':'599',
+        journal_line = {'Account':account_name,
+        'Internal ID':account_internal_id,
         'DR':abs(levies_sum),
         'CR':0,
         'Name':'',
         'Memo':'White Delta Levy'}
         journal_entry1 = journal_entry1.append(journal_line,ignore_index=True)
     else :
-        journal_line = {'Account':'840203 - Other Levies',
-        'Internal ID':'599',
+        journal_line = {'Account':account_name,
+        'Internal ID':account_internal_id,
         'DR':0,
         'CR':abs(levies_sum),
         'Name':'',
@@ -145,16 +151,16 @@ try :
     # print('levies_rd_sum',levies_rd_sum)
     print(len(red_delta_levies),'red delta levies found:',red_delta_levies,)
     if levies_rd_sum < 0 :
-        journal_line = {'Account':'840203 - Other Levies',
-        'Internal ID':'599',
+        journal_line = {'Account':account_name,
+        'Internal ID':account_internal_id,
         'DR':abs(levies_rd_sum),
         'CR':0,
         'Name':'',
         'Memo':'Red Delta Levy'}
         journal_entry1 = journal_entry1.append(journal_line,ignore_index=True)
     else :
-        journal_line = {'Account':'840203 - Other Levies',
-        'Internal ID':'599',
+        journal_line = {'Account':account_name,
+        'Internal ID':account_internal_id,
         'DR':0,
         'CR':abs(levies_rd_sum),
         'Name':'',
