@@ -146,7 +146,7 @@ if correction_check == 'y' :
     journal_entry1.loc[journal_entry1['Account'] == '137002 - Un-reconciled B2C Payments','DR'] = unrec_payments_1
 
 journal_entry1['External ID'],journal_entry1['Department'],journal_entry1['Product'],journal_entry1['Brand'],journal_entry1['Technology'],journal_entry1['Channel'],journal_entry1['Region'] = recon_period_market,'12','Corporate','Corporate','Corporate','B2C : Mainstream Amazon',recon_region
-journal_entry1 = journal_entry1.set_index('External ID')
+journal_entry1 = journal_entry1.set_index('External ID').sort_values('Internal ID')
 
 journal_entry1.to_csv(recon_path+r'\Output Files\journal_entry1'+recon_country+'.csv')
 journal_entry2.to_csv(recon_path+r'\Output Files\journal_entry2'+recon_country+'.csv')
