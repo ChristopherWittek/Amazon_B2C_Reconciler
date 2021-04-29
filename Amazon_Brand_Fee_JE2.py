@@ -135,19 +135,31 @@ for key,val in amount_type_fees_summary.iterrows() :
             journal_entry2 = journal_entry2.append(journal_line,ignore_index=True)
 
 #### Credit to Account "Unreconciled B2C Payments" ####
-recon_amount_2 = round(abs(sum(journal_entry2['CR'] - journal_entry2['DR'])),2)
-journal_line = {'Account':'137002 - Un-reconciled B2C Payments',
-'Internal ID':742,
-'DR':0,
-'CR':recon_amount_2,
-'Name':'',
-'Memo':'Bank Deposit - '+recon_period_market,
-'Department':'12',
-'Product':'Corporate',
-'Brand':'Corporate',
-'Technology':'Corporate'}
+recon_amount_2 = round(sum(journal_entry2['CR'] - journal_entry2['DR']),2)
+if recon_amount_2 < 0 :
+    journal_line = {'Account':'137002 - Un-reconciled B2C Payments',
+    'Internal ID':742,
+    'DR':0,
+    'CR':abs(recon_amount_2),
+    'Name':'',
+    'Memo':'Bank Deposit - '+recon_period_market,
+    'Department':'12',
+    'Product':'Corporate',
+    'Brand':'Corporate',
+    'Technology':'Corporate'}
+else :
+    journal_line = {'Account':'137002 - Un-reconciled B2C Payments',
+    'Internal ID':742,
+    'DR':abs(recon_amount_2),
+    'CR':0,
+    'Name':'',
+    'Memo':'Bank Deposit - '+recon_period_market,
+    'Department':'12',
+    'Product':'Corporate',
+    'Brand':'Corporate',
+    'Technology':'Corporate'}
 journal_entry2 = journal_entry2.append(journal_line,ignore_index=True)
 journal_entry2['External ID'],journal_entry2['Channel'],journal_entry2['Region'] = recon_period_market+r'\JE2','B2C : Mainstream Amazon',recon_region
-journal_entry2 = journal_entry2.set_index('External ID')
+# journal_entry2 = journal_entry2.set_index('External ID')
 
 import Amazon_RMAs_JE3

@@ -59,3 +59,5 @@ clawback_reimbursement_breakdown.to_csv('clawback_reimbursement_breakdown.csv')
 print('brand_commission_fulfillment_fees_summary',brand_commission_fulfillment_fees_summary)
 print('amount_type_fees_summary',amount_type_fees_summary)
 print('clawback_reimbursement_breakdown',len(clawback_reimbursement_breakdown),'rows.')
+
+amount_type_fees_summary.to_csv('amount_type_fees_summary.csv')
