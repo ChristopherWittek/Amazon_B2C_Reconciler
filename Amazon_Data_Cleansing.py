@@ -137,7 +137,7 @@ netsuite_payments.to_csv('netsuite_payments.csv')
 netsuite_orders_tax = pd.read_csv(path_parent+r'\NetSuite Data\NetSuite_Amazon_orders.csv',delimiter=',',encoding='iso8859_15',dtype=object).rename(columns={'ChannelAdvisor Order ID':'order-id'})
 
 def float_cleanser(dirty_series) :
-    dirty_series = dirty_series.str.replace(',','').str.replace('(','-').str.replace('€','').str.strip().str.replace('$','').str.replace('£','').str.replace(r'-â\x82','').str.replace('Â','').str.rstrip(')').str.replace('Can','').str.replace('--','-').str.replace('¬','').astype(float)
+    dirty_series = dirty_series.str.replace(',','',regex=True).str.replace('(','-',regex=True).str.replace('€','',regex=True).str.strip().str.replace('$','',regex=True).str.replace('£','',regex=True).str.replace(r'-â\x82','',regex=True).str.replace('Â','',regex=True).str.rstrip(')',regex=True).str.replace('Can','',regex=True).str.replace('--','-',regex=True).str.replace('¬','',regex=True).astype(float)
     global clean_series
     clean_series = dirty_series
     return clean_series
