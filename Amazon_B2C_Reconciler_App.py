@@ -12,7 +12,7 @@ recon_path_data = recon_path+r'\Data'
 path_parent = os.path.dirname(os.getcwd())
 
 try :
-    recon_period_market = re.findall('Amazon .*?$',recon_path)[0]
+    recon_period_market = re.findall('Amazon .*?$',recon_path)[0].replace('\\','')
 except :
     print('File path not correct format')
 

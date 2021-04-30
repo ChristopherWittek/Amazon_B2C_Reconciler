@@ -6,6 +6,8 @@ from Amazon_Brand_Fee_Recon import *
 from Amazon_Marketplace_Recon_JE1 import *
 from Amazon_Brand_Fee_JE2 import *
 from Amazon_Data_Cleansing import *
+from Amazon_B2C_Reconciler_App import *
+
 
 print('>> JOURNAL ENTRY 1 & 2 SUM-CHECK vs AMAZON STATEMENT <<')
 
@@ -92,8 +94,17 @@ journal_entry1['External ID'],journal_entry1['Department'],journal_entry1['Produ
 journal_entry1 = journal_entry1.set_index('External ID').sort_values('Internal ID')
 journal_entry2 = journal_entry2.set_index('External ID')#.sort_values('Internal ID')
 
-journal_entry1.to_csv(recon_path+r'\Output Files\journal_entry1'+recon_country+'.csv')
-journal_entry2.to_csv(recon_path+r'\Output Files\journal_entry2'+recon_country+'.csv')
+if ( journal_entry1['DR'].sum() - journal_entry1['CR'].sum() ) == 0 :
+    journal_entry1.to_csv(recon_path+r'\Output Files\journal_entry1 '+recon_period_market+'.csv')
+else :
+    print(r'"/!\ JOURNAL ENTRY 1 DOES NOT BALANCE /!\"')
+    journal_entry1.to_csv(recon_path+r'\Output Files\journal_entry1 '+recon_period_market+'_UNBALANCED.csv')
+
+if ( journal_entry2['DR'].sum() - journal_entry2['CR'].sum() ) == 0 :
+    journal_entry2.to_csv(recon_path+r'\Output Files\journal_entry2 '+recon_period_market+'.csv')
+else :
+    print(r'"/!\ JOURNAL ENTRY 2 DOES NOT BALANCE /!\"')
+    journal_entry2.to_csv(recon_path+r'\Output Files\journal_entry2 '+recon_period_market+'_UNBALANCED.csv')
 
 
 if recon_country == 'US' :
