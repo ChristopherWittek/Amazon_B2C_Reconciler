@@ -38,14 +38,14 @@ def ReconSumCheck(je1_amount,je2_amount,je1_sum_check,je2_sum_check,recon_amount
     sum_check_df = pd.DataFrame(columns=cols)
     je1_line = {'Journal':'Journal Entry 1','Amount ('+currency+')':je1_amount,'Target('+currency+')':recon_amount_1,'Difference ('+currency+')':je1_sum_check }
     je2_line = {'Journal':'Journal Entry 2','Amount ('+currency+')':je2_amount,'Target('+currency+')':recon_amount_2,'Difference ('+currency+')':je2_sum_check }
-    sum_check_df = sum_check_df.append([je1_line,je2_line],ignore_index=True).set_index('Journal')
+    sum_check_df = sum_check_df.append([je1_line,je2_line],ignore_index=True)#.set_index(cols)
     print('> Journal Sum-Check <\n',sum_check_df)
     global recon_sum_check
     recon_sum_check = round(je1_amount + je2_amount - recon_target,2)
     cols = ['Journal Entry 1 ('+currency+')','Journal Entry 2 ('+currency+')','Amazon Statement ('+currency+')','Difference ('+currency+')']
     recon_total_check_df = pd.DataFrame(columns=cols)
     recon_total_check_line = {'Journal Entry 1 ('+currency+')':je1_amount,'Journal Entry 2 ('+currency+')':je2_amount,'Amazon Statement ('+currency+')':recon_target,'Difference ('+currency+')':recon_sum_check}
-    recon_total_check_df = recon_total_check_df.append(recon_total_check_line,ignore_index=True).set_index('Journal Entry 1 ('+currency+')')
+    recon_total_check_df = recon_total_check_df.append(recon_total_check_line,ignore_index=True)#.set_index(cols)
     print('> Recon Sum-Check <\n',recon_total_check_df)
 
 ReconSumCheck(je1_amount,je2_amount,je1_sum_check,je2_sum_check,recon_amount_1,recon_amount_2)
