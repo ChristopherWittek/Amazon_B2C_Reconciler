@@ -7,7 +7,7 @@ from Amazon_Marketplace_Recon_JE1 import *
 from Amazon_Brand_Fee_JE2 import *
 from Amazon_Data_Cleansing import *
 
-print('> JOURNAL ENTRY 1 & 2 SUM-CHECK vs AMAZON STATEMENT <')
+print('>> JOURNAL ENTRY 1 & 2 SUM-CHECK vs AMAZON STATEMENT <<')
 
 ##### JE1,JE2,JETotal #####
 amount_type_fees_summary_amount_type = round(amount_type_fees_summary.groupby('amount-type').sum(),2)
@@ -31,13 +31,22 @@ je2_amount = JournalBankSum(journal_entry2)
 je1_sum_check = round(je1_amount - recon_amount_1,2)
 je2_sum_check = round(je2_amount - recon_amount_2,2)
 
-# journal_sum_check = round(je1_amount - recon_amount_1,2)
+def ReconSumCheck(je1_amount,je2_amount,je1_sum_check,je2_sum_check,recon_amount_1,recon_amount_2) :
+    cols = ['Journal','Amount ('+currency+')','Target('+currency+')','Difference ('+currency+')']
+    sum_check_df = pd.DataFrame(columns=cols)
+    je1_line = {'Journal':'Journal Entry 1','Amount ('+currency+')':je1_amount,'Target('+currency+')':recon_amount_1,'Difference ('+currency+')':je1_sum_check }
+    je2_line = {'Journal':'Journal Entry 2','Amount ('+currency+')':je2_amount,'Target('+currency+')':recon_amount_2,'Difference ('+currency+')':je2_sum_check }
+    sum_check_df = sum_check_df.append([je1_line,je2_line],ignore_index=True).set_index('Journal')
+    print('> Journal Sum-Check <\n',sum_check_df)
+    global recon_sum_check
+    recon_sum_check = round(je1_amount + je2_amount - recon_target,2)
+    cols = ['Journal Entry 1 ('+currency+')','Journal Entry 2 ('+currency+')','Amazon Statement ('+currency+')','Difference ('+currency+')']
+    recon_total_check_df = pd.DataFrame(columns=cols)
+    recon_total_check_line = {'Journal Entry 1 ('+currency+')':je1_amount,'Journal Entry 2 ('+currency+')':je2_amount,'Amazon Statement ('+currency+')':recon_target,'Difference ('+currency+')':recon_sum_check}
+    recon_total_check_df = recon_total_check_df.append(recon_total_check_line,ignore_index=True).set_index('Journal Entry 1 ('+currency+')')
+    print('> Recon Sum-Check <\n',recon_total_check_df)
 
-print('Journal Entry 1:',je1_amount,'|| Journal Entry 1 Target:',recon_amount_1,'|| Difference:',je1_sum_check )
-print('Journal Entry 2:',je2_amount,'|| Journal Entry 2 Target:',recon_amount_2,'|| Difference:',je2_sum_check )
-recon_sum_check = round(je1_amount + je2_amount - recon_target,2)
-print('> Recon Sum-Check <')
-print('Journal Entry 1:',je1_amount,'|| Journal Entry 2:',je2_amount,'|| Amazon Statement:',recon_target,'|| Sum-Check:',recon_sum_check)
+ReconSumCheck(je1_amount,je2_amount,je1_sum_check,je2_sum_check,recon_amount_1,recon_amount_2)
 
 if recon_sum_check != 0 :
     correction_check = input('> Do you want to correct the Sum-Check difference? < (y/n) : ')
@@ -73,10 +82,7 @@ if recon_sum_check != 0 :
     je1_sum_check = round(je1_amount - recon_amount_1,2)
     je2_sum_check = round(je2_amount - recon_amount_2,2)
 
-    print('journal_entry2:',len(journal_entry2),'rows.')
-    recon_sum_check = round(je1_amount + je2_amount - recon_target,2)
-    print('> Recon Sum-Check <')
-    print('Journal Entry 1:',je1_amount,'|| Journal Entry 2:',je2_amount,'|| Amazon Statement:',recon_target,'|| Sum-Check:',recon_sum_check)
+    ReconSumCheck(je1_amount,je2_amount,je1_sum_check,je2_sum_check,recon_amount_1,recon_amount_2)
 
 else :
     pass

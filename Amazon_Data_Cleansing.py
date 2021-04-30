@@ -26,7 +26,8 @@ if txt_statements_opt == 'y' :
 amazon_seller_center_report = pd.read_csv(recon_path_data+r'\Amazon_seller_center_report.csv',delimiter=',',dtype=object,encoding='iso8859_15')
 amazon_seller_center_report['total-amount'] = amazon_seller_center_report['total-amount'].astype(float)
 recon_target_sum = round(amazon_seller_center_report['total-amount'].sum(),2)
-print(recon_target_sum)
+currency = amazon_seller_center_report['currency'][0]
+print('>> TOTAL STATEMENT PAY-OUT :',recon_target_sum,currency,'<<')
 
 ############ CLEAN MESSY AMAZON SKUs (works but extremely slow - okay for all countries except USA) ######################
 netsuite_product_data = pd.read_csv(path_parent+r'\NetSuite Data\AMZ_Products.csv',decimal=',',delimiter=',',encoding='iso8859_15').rename(columns={'Feed Name':'sku'}).drop('Name',axis=1)#.set_index('sku')
