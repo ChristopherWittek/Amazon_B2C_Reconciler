@@ -69,7 +69,7 @@ else :
 
 #### Recon Summary ####
 os.chdir(recon_path+r'\Output Files')
-with pd.ExcelWriter('Recon Summary'+recon_country+'.xlsx') as recon_summary :
+with pd.ExcelWriter('Recon Summary '+recon_period_market+'.xlsx') as recon_summary :
     amazon_netsuite_recon_summary.to_excel(recon_summary,sheet_name='Recon Summary')
     if len(red_deltas_df) != 0 :
         if len(red_deltas_df) > 0 :
@@ -103,7 +103,7 @@ try :
     manual_rma_entry = netsuite_orders_rma[netsuite_orders_rma['No. of Line Items'] == 1]
     manual_rma_entry = netsuite_orders_rma.merge(amazon_netsuite_recon_summary,on='order-id',how='left')
     manual_rma_entry = manual_rma_entry[['order-id','Grand Total', 'Sale', 'Credit', 'Delta']].rename(columns={'order-id':'ChannelAdvisor oder-id','Grand Total':'Amazon Statement','Sale':'NS Payment','Credit':'NS Refund'}).drop_duplicates('ChannelAdvisor oder-id')
-    manual_rma_entry.to_csv(recon_path+r'\Output Files\manual_RMA_entry'+recon_country+'.csv')
+    manual_rma_entry.to_csv(recon_path+r'\Output Files\manual_RMA_entry '+recon_period_market+'.csv')
 except Exception as e :
     print(r'/!\ REPORT FAILED: manual_rma_entry /!\','"Error: ", e)
 
@@ -111,7 +111,7 @@ try :
     rma_csv_upload = netsuite_orders_rma[netsuite_orders_rma['No. of Line Items'] == 1].drop(['Type','order-id','Item','No. of Line Items'],1)
     rma_csv_upload['FBA Refund'] = 'T'
     rma_csv_upload = rma_csv_upload.rename(columns={'Internal ID':'Sales Order : Internal ID'}).set_index('Sales Order : Internal ID')#.reset_index(drop=True)
-    rma_csv_upload.to_csv(recon_path+r'\Output Files\RMA_CSV_upload'+recon_country+'.csv')
+    rma_csv_upload.to_csv(recon_path+r'\Output Files\RMA_CSV_upload '+recon_period_market+'.csv')
 except Exception as e :
     print(r'/!\ REPORT FAILED: rma_csv_upload /!\','"Error: ", e)
 
