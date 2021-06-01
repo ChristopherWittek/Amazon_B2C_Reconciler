@@ -136,16 +136,16 @@ netsuite_payments.to_csv('netsuite_payments.csv')
 
 netsuite_orders_tax = pd.read_csv(path_parent+r'\NetSuite Data\NetSuite_Amazon_orders.csv',delimiter=',',encoding='iso8859_15',dtype=object).rename(columns={'ChannelAdvisor Order ID':'order-id'})
 
-def float_cleanser(dirty_series) :
-    dirty_series = dirty_series.str.replace(',','',regex=True).str.replace('(','-',regex=True).str.replace('€','',regex=True).str.strip().str.replace('$','',regex=True).str.replace('£','',regex=True).str.replace(r'-â\x82','',regex=True).str.replace('Â','',regex=True).str.rstrip(')',regex=True).str.replace('Can','',regex=True).str.replace('--','-',regex=True).str.replace('¬','',regex=True).astype(float)
+def FloatCleanser(dirty_series) :
+    dirty_series = dirty_series.str.replace(',','',regex=True).str.replace('(','-',regex=True).str.replace('€','',regex=True).str.strip().str.replace('$','',regex=True).str.replace('£','',regex=True).str.replace(r'-â\x82','',regex=True).str.replace('Â','',regex=True).str.rstrip(')').str.replace('Can','',regex=True).str.replace('--','-',regex=True).str.replace('¬','',regex=True).astype(float)
     global clean_series
     clean_series = dirty_series
     return clean_series
 
 try :
-    netsuite_orders_tax['Amount (Foreign Currency)'] = float_cleanser(netsuite_orders_tax['Amount (Foreign Currency)'])
+    netsuite_orders_tax['Amount (Foreign Currency)'] = FloatCleanser(netsuite_orders_tax['Amount (Foreign Currency)'])
 except Exception as e :
-    print(e)
+    print(r'"/!\ FloatCleanser Failed /!\"',e)
 
 amount_description_types = {'Commission':(525,'640101 - Amazon Fees'),
     'COMPENSATED_CLAWBACK':(54,'410101 - Revenue'),
