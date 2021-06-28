@@ -34,6 +34,7 @@ amazon_netsuite_recon_summary['Credit'] = 0.0
 amazon_netsuite_recon_summary['Delta'] = 0.0
 amazon_netsuite_recon_summary['Comments'] = ''
 recon_length = len(amazon_netsuite_recon_summary)
+netsuite_payments.to_csv('netsuite_payments.csv')
 for key,val in tqdm(amazon_netsuite_recon_summary.iterrows(),total=recon_length,desc='Reconciling payments/refunds using order-id') :
     cust_name = key[0]
     cus_id = key[1]
