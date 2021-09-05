@@ -94,18 +94,17 @@ journal_entry1['External ID'],journal_entry1['Department'],journal_entry1['Produ
 journal_entry1 = journal_entry1.set_index('External ID').sort_values('Internal ID')
 journal_entry2 = journal_entry2.set_index('External ID')#.sort_values('Internal ID')
 
-if ( journal_entry1['DR'].sum() - journal_entry1['CR'].sum() ) == 0 :
+if 0.01 > ( journal_entry1['DR'].sum() - journal_entry1['CR'].sum() ) > -0.01 :
     journal_entry1.to_csv(recon_path+r'\Output Files\journal_entry1 '+recon_period_market+'.csv')
 else :
     print(r'"/!\ JOURNAL ENTRY 1 DOES NOT BALANCE /!\"')
     journal_entry1.to_csv(recon_path+r'\Output Files\journal_entry1 '+recon_period_market+'_UNBALANCED.csv')
 
-if ( journal_entry2['DR'].sum() - journal_entry2['CR'].sum() ) == 0 :
+if 0.01 > ( journal_entry1['DR'].sum() - journal_entry1['CR'].sum() ) > -0.01 :
     journal_entry2.to_csv(recon_path+r'\Output Files\journal_entry2 '+recon_period_market+'.csv')
 else :
     print(r'"/!\ JOURNAL ENTRY 2 DOES NOT BALANCE /!\"')
     journal_entry2.to_csv(recon_path+r'\Output Files\journal_entry2 '+recon_period_market+'_UNBALANCED.csv')
-
 
 if recon_country == 'US' :
     fee_comparison = amount_type_fees_summary.reset_index()

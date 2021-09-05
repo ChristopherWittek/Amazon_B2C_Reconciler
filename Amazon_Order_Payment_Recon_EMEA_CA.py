@@ -20,7 +20,7 @@ recon_amount_descriptions_criteria = recon_amount_descriptions_criteria[
  (recon_amount_descriptions_criteria.index.notnull())]
 recon_amount_descriptions_criteria['Name'] = recon_amount_descriptions_criteria['Name'].fillna('CUSTOMER_NAME_MISSING')
 recon_amount_descriptions_criteria['amount'] = recon_amount_descriptions_criteria['amount'].astype(float)
-
+recon_amount_descriptions_criteria.to_csv('recon_amount_descriptions_criteria.csv')
 # create pivot table with amount descriptions as columns
 amazon_netsuite_recon_summary = pd.pivot_table(recon_amount_descriptions_criteria,
 index=['Name','ID','Internal ID','order-id'],
@@ -34,6 +34,7 @@ amazon_netsuite_recon_summary['Credit'] = 0.0
 amazon_netsuite_recon_summary['Delta'] = 0.0
 amazon_netsuite_recon_summary['Comments'] = ''
 recon_length = len(amazon_netsuite_recon_summary)
+netsuite_payments.to_csv('netsuite_payments.csv')
 for key,val in tqdm(amazon_netsuite_recon_summary.iterrows(),total=recon_length,desc='Reconciling payments/refunds using order-id') :
     cust_name = key[0]
     cus_id = key[1]

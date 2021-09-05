@@ -3,7 +3,7 @@ import os
 import re
 pd.options.display.float_format = '{:,.2f}'.format
 
-print('>> B2C AMAZON RECONCILER APP <<')
+print('>> B2C AMAZON RECONCILER APP <<')#test
 
 input_recon_path = input('Copy & paste file-path to desired reconciliation folder:')
 recon_path = input_recon_path
@@ -14,13 +14,15 @@ path_parent = os.path.dirname(os.getcwd())
 try :
     recon_period_market = re.findall('Amazon .*?$',recon_path)[0].replace('\\','').replace(' - ','.')
 except :
-    print('File path not correct format')
+    print(r'"/!\ File path not correct format /!\"')
+    recon_period_market = input('Enter Recon Period Market (e.g. Amazon 04.2021):')
+
 
 input_recon_country = recon_path.split('\\')[-1]
 # input_recon_country = input('Which country is being reconciled? (US, CA, DE, IT, ES, FR, UK, NL): ')
 
 def region_recon(input_recon_country) :
-    global recon_country
+    global recon_region, recon_country
     recon_country = input_recon_country
     recon_regions = {'EMEA':'EMEA',
     'US':'Americas : NAM : United States',
@@ -35,8 +37,7 @@ def region_recon(input_recon_country) :
         if key == recon_country :
             global recon_region
             recon_region = val
-    return recon_region
-    return recon_country
+    return recon_region, recon_country
 
 region_recon(input_recon_country)
 
